@@ -2775,7 +2775,7 @@ class LockCachingAudioSource extends StreamAudioSource {
     final sink = (await _partialCacheFile).openWrite();
     final sourceLength = response.contentLength == -1 ? null : response.contentLength;
     String mimeType = response.headers.contentType.toString();
-    if (mimeType.contains('octet-stream')) {
+    if (mimeType.contains('octet-stream') && Platform.isIOS) {
       /// ios чувствителен к content-type, мы знаем, что в хранилище будут только mp3 файлы
       /// но хранилище отдает binary/octet-stream, что не нравится плееру ios
       mimeType = 'audio/mpeg';
