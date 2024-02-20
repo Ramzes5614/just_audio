@@ -2906,7 +2906,11 @@ class LockCachingAudioSource extends StreamAudioSource {
           cacheResponse.controller.close();
         }
       }
-      (await _partialCacheFile).renameSync(cacheFile.path);
+      try {
+        (await _partialCacheFile).renameSync(cacheFile.path);
+      } catch (e) {
+        debugPrint('Failed to rename partial cache file to complete cache file: $e');
+      }
       await subscription.cancel();
       httpClient.close();
       _downloading = false;
