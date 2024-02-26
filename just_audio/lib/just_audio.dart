@@ -338,7 +338,8 @@ class AudioPlayer {
   Future<void> _removeOldAssetCacheDir() async {
     if (kIsWeb) return;
     try {
-      final oldAssetCacheDir = Directory(p.join((await getTemporaryDirectory()).path, 'just_audio_asset_cache'));
+      final oldAssetCacheDir =
+          Directory(p.join((await getApplicationDocumentsDirectory()).path, 'just_audio_asset_cache'));
       if (oldAssetCacheDir.existsSync()) {
         try {
           oldAssetCacheDir.deleteSync(recursive: true);
@@ -2764,6 +2765,7 @@ class LockCachingAudioSource extends StreamAudioSource {
 
     final httpClient = _createHttpClient(userAgent: _player?._userAgent);
     final httpRequest = await _getUrl(httpClient, uri, headers: headers);
+    debugPrint(httpRequest.uri.path);
     final response = await httpRequest.close();
     if (response.statusCode != 200) {
       httpClient.close();
@@ -3201,7 +3203,8 @@ _ProxyHandler _proxyHandlerForUri(
   return handler;
 }
 
-Future<Directory> _getCacheDir() async => Directory(p.join((await getTemporaryDirectory()).path, 'just_audio_cache'));
+Future<Directory> _getCacheDir() async =>
+    Directory(p.join((await getApplicationDocumentsDirectory()).path, 'just_audio_cache'));
 
 /// Defines the algorithm for shuffling the order of a
 /// [ConcatenatingAudioSource]. See [DefaultShuffleOrder] for a default
